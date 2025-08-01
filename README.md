@@ -35,7 +35,6 @@ is a Flask-based web application that predicts the most suitable crop to cultiva
 AgroTech-Crop-Selector/
 
 │
-
 ├── static/
 
 │   ├── background.jpg
