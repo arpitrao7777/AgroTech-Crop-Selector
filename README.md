@@ -54,7 +54,7 @@ Clone the repository
 bash
 Copy
 Edit
-git clone https://github.com/yourusername/AgroTech-Crop-Selector.git
+git clone https://github.com/arpitrao7777/AgroTech-Crop-Selector.git
 cd AgroTech-Crop-Selector
 Set up a virtual environment (recommended)
 
