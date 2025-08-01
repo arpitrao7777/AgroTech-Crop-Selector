@@ -1,5 +1,6 @@
 # AgroTech-Crop-Selector
 🌱 AgroTech Crop Selector
+
 AgroTech Crop Selector is a Flask-based web application that predicts the most suitable crop to cultivate based on key agricultural parameters like soil nutrients (N, P, K), temperature, humidity, pH, and rainfall. It utilizes a machine learning model trained on agricultural datasets to assist farmers and agriculturalists in making data-driven decisions.
 
 🚀 Features
