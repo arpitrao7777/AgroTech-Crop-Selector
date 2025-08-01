@@ -32,22 +32,23 @@ is a Flask-based web application that predicts the most suitable crop to cultiva
 
 **📂 Project Structure**
 
-📁 AgroTech-Crop-Selector/
-├── 📁 static/
+AgroTech-Crop-Selector/
+│
+├── static/
 │   ├── background.jpg
 │   ├── default.jpg
 │   ├── placeholder.jpg
 │   ├── rice.jpg
 │   ├── banana.jpg
-│   └── ... (images for each crop)
+│   └── ... (other crop images)
 │
-├── 📁 templates/
+├── templates/
 │   └── index.html
 │
-├── model.pkl           # Trained ML model
-├── sc.pkl              # StandardScaler used in training
-├── app.py              # Flask application code
-└── README.md           # Project documentation
+├── model.pkl       # Trained ML model
+├── sc.pkl          # StandardScaler used during model training
+├── app.py          # Flask backend application
+└── README.md       # Project documentation
 
 
 **🖥️ How to Run the Project**
