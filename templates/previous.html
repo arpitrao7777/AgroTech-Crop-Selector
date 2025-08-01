@@ -1,0 +1,734 @@
+# from flask import Flask,render_template,request
+# import pickle
+# import numpy as np
+# import pandas as pd
+# import sklearn
+# import os
+#
+# #importing model
+# model = pickle.load(open('model.pkl','rb'))
+# sc = pickle.load(open('sc.pkl', 'rb'))
+#
+# #creating flask app
+# app = Flask(__name__)
+#
+# @app.route("/", methods=["GET", "POST"])
+# def home():
+#     static_files = os.listdir(os.path.join(app.root_path, 'static'))
+#     return render_template("index.html", lookup_static_files=static_files)
+#
+# @app.route("/predict", methods=['POST'])
+# def predict():
+#     N = int(request.form['Nitrogen'])
+#     P = int(request.form['Phosphorus'])
+#     K = int(request.form['Potassium'])
+#     temp = float(request.form['Temperature'])
+#     humidity = float(request.form['Humidity'])
+#     ph = float(request.form['Ph'])
+#     rainfall = float(request.form['Rainfall'])
+#
+#     static_files = os.listdir(os.path.join(app.root_path, 'static'))
+#
+#     # Input validation
+#     if not (1 <= ph <= 14):
+#         return render_template("index.html", result="Error: pH must be between 1 and 14.", lookup_static_files=static_files)
+#     if humidity > 100:
+#         return render_template("index.html", result="Error: Humidity cannot exceed 100%.", lookup_static_files=static_files)
+#     if temp > 55:
+#         return render_template("index.html", result="Error: Temperature cannot exceed 55°C.", lookup_static_files=static_files)
+#
+#     feature_list = [N, P, K, temp, humidity, ph, rainfall]
+#     single_pred = np.array(feature_list).reshape(1, -1)
+#
+#     scaled_input = sc.transform(single_pred)
+#
+#     prediction = model.predict(scaled_input)
+#
+#     crop_dict = {1: "Rice", 2: "Maize", 3: "Jute", 4: "Cotton", 5: "Coconut", 6: "Papaya", 7: "Orange",
+#                  8: "Apple", 9: "Muskmelon", 10: "Watermelon", 11: "Grapes", 12: "Mango", 13: "Banana",
+#                  14: "Pomegranate", 15: "Lentil", 16: "Black gram", 17: "Mung bean", 18: "Moth beans",
+#                  19: "Pigeon peas", 20: "Kidney beans", 21: "Chickpea", 22: "Coffee"}
+#
+#     if prediction[0] in crop_dict:
+#         crop = crop_dict[prediction[0]]
+#         return render_template("index.html", result=crop, lookup_static_files=static_files)
+#     else:
+#         return render_template("index.html", result="Unknown", lookup_static_files=static_files)
+#
+#
+# #python main
+# if __name__== "__main__":
+#     app.run(debug=True)
+
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--  <head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>AgroTech Crop Selector</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">-->
+<!--    <style>-->
+<!--      body {-->
+<!--        background: url("{{ url_for('static', filename='background.jpg') }}") no-repeat center center fixed;-->
+<!--        background-size: cover;-->
+<!--      }-->
+
+<!--      h1 {-->
+<!--        color: mediumseagreen;-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .warning {-->
+<!--        color: red;-->
+<!--        font-weight: bold;-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .card {-->
+<!--        margin-top: 20px;-->
+<!--        color: white;-->
+<!--      }-->
+
+<!--      .card-body {-->
+<!--        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--        font-size: 1.1rem;-->
+<!--        line-height: 1.6;-->
+<!--        padding: 1.25rem;-->
+<!--      }-->
+
+<!--      .card-title {-->
+<!--        font-size: 1.4rem;-->
+<!--        font-weight: 600;-->
+<!--        margin-bottom: 0.75rem;-->
+<!--      }-->
+
+<!--      .card-text {-->
+<!--        font-size: 1.1rem;-->
+<!--        font-weight: 500;-->
+<!--      }-->
+
+<!--      .container {-->
+<!--        background-color: transparent;-->
+<!--        backdrop-filter: blur(5px);-->
+<!--        font-weight: bold;-->
+<!--        padding: 20px;-->
+<!--        border-radius: 15px;-->
+<!--        animation: fadeSlideUp 0.8s ease-out;-->
+<!--      }-->
+
+<!--      @media (max-width: 768px) {-->
+<!--        .form-control {-->
+<!--          margin-bottom: 10px;-->
+<!--        }-->
+<!--      }-->
+
+<!--      @keyframes fadeSlideUp {-->
+<!--        from { opacity: 0; transform: translateY(20px); }-->
+<!--        to { opacity: 1; transform: translateY(0); }-->
+<!--      }-->
+<!--    </style>-->
+<!--  </head>-->
+<!--  <body>-->
+
+<!--  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--    <div class="container-fluid">-->
+<!--      <a class="navbar-brand" href="/">AgroTech Crop Selector</a>-->
+<!--      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--      </button>-->
+<!--      <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--        <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="#">Contact</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link disabled">About</a>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--        <form class="d-flex" role="search">-->
+<!--          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--          <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </nav>-->
+
+<!--  <div class="container my-3 mt-3">-->
+<!--    <h1 style="color: #006400; text-align: center; margin-bottom: 50px;">-->
+<!--      AgroTech Crop Selector <span>🌱</span>-->
+<!--    </h1>-->
+
+<!--    <form action="/predict" method="POST">-->
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Nitrogen">Nitrogen</label>-->
+<!--          <input type="number" id="Nitrogen" name="Nitrogen" class="form-control" placeholder="Enter Nitrogen" title="Amount of Nitrogen in soil" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Phosphorus">Phosphorus</label>-->
+<!--          <input type="number" id="Phosphorus" name="Phosphorus" class="form-control" placeholder="Enter Phosphorus" title="Amount of Phosphorus in soil" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Potassium">Potassium</label>-->
+<!--          <input type="number" id="Potassium" name="Potassium" class="form-control" placeholder="Enter Potassium" title="Amount of Potassium in soil" required>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Temperature">Temperature (°C)</label>-->
+<!--          <input type="number" step="0.01" id="Temperature" name="Temperature" class="form-control" placeholder="Enter Temperature in °C" title="Temperature in degree Celsius" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Humidity">Humidity (%)</label>-->
+<!--          <input type="number" step="0.01" id="Humidity" name="Humidity" class="form-control" placeholder="Enter Humidity in %" title="Humidity percentage" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Ph">pH</label>-->
+<!--          <input type="number" step="0.01" id="Ph" name="Ph" class="form-control" placeholder="Enter pH value" title="Soil pH value" required>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Rainfall">Rainfall (mm)</label>-->
+<!--          <input type="number" step="0.01" id="Rainfall" name="Rainfall" class="form-control" placeholder="Enter Rainfall in mm" title="Rainfall amount in millimeters" required>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="alert alert-info alert-dismissible fade show mt-3" role="alert">-->
+<!--        🌾 Tip: Soil with PH between 6-7 is ideal for most crops.-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-12 text-center">-->
+<!--          <button type="submit" class="btn btn-primary btn-lg">Result</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </form>-->
+
+<!--    {% if result %}-->
+<!--    <div class="d-flex justify-content-center mt-4">-->
+<!--      <div class="card bg-dark" style="width: 18rem;">-->
+<!--        <img src="{{ url_for('static', filename=(result|lower|replace(' ', '_') + '.jpg') if (result|lower|replace(' ', '_') + '.jpg') in lookup_static_files else 'default.jpg') }}" class="card-img-top" alt="Suggested Crop Image">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">Suggested Crop for Your Farm:</h5>-->
+<!--          <p class="card-text">{{ result }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    {% else %}-->
+<!--    <div class="d-flex justify-content-center mt-4">-->
+<!--      <div class="card bg-dark" style="width: 18rem;">-->
+<!--        <img src="{{ url_for('static', filename='placeholder.jpg') }}" class="card-img-top" alt="Placeholder Image">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">Suggested Crop will appear here</h5>-->
+<!--          <p class="card-text">Enter your soil and weather data above to get started!</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    {% endif %}-->
+<!--  </div>-->
+
+<!--  <footer class="text-center text-light bg-dark py-3 mt-5">-->
+<!--    &copy; 2025 AgroTech Crop Selector. All Rights Reserved.-->
+<!--  </footer>-->
+
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>-->
+<!--  </body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--  <head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>AgroTech Crop Selector</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">-->
+<!--    <style>-->
+<!--      body {-->
+<!--        background: url("{{ url_for('static', filename='background.jpg') }}") no-repeat center center fixed;-->
+<!--        background-size: cover;-->
+<!--      }-->
+
+<!--      h1 {-->
+<!--        color: mediumseagreen;-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .warning {-->
+<!--        color: red;-->
+<!--        font-weight: bold;-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .card {-->
+<!--        margin-top: 20px;-->
+<!--        color: white;-->
+<!--        animation: fadeIn 1s ease-in-out;-->
+<!--      }-->
+
+<!--      .card-body {-->
+<!--        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--        font-size: 1.1rem;-->
+<!--        line-height: 1.6;-->
+<!--        padding: 1.25rem;-->
+<!--      }-->
+
+<!--      .card-title {-->
+<!--        font-size: 1.4rem;-->
+<!--        font-weight: 600;-->
+<!--        margin-bottom: 0.75rem;-->
+<!--      }-->
+
+<!--      .card-text {-->
+<!--        font-size: 1.3rem;-->
+<!--        font-weight: 600;-->
+<!--      }-->
+
+<!--      .container {-->
+<!--        background-color: transparent;-->
+<!--        backdrop-filter: blur(5px);-->
+<!--        font-weight: bold;-->
+<!--        padding: 20px;-->
+<!--        border-radius: 15px;-->
+<!--      }-->
+
+<!--      @media (max-width: 768px) {-->
+<!--        .form-control {-->
+<!--          margin-bottom: 10px;-->
+<!--        }-->
+<!--      }-->
+
+<!--      @keyframes fadeIn {-->
+<!--        from { opacity: 0; transform: translateY(20px); }-->
+<!--        to { opacity: 1; transform: translateY(0); }-->
+<!--      }-->
+<!--    </style>-->
+<!--  </head>-->
+<!--  <body>-->
+
+<!--  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--    <div class="container-fluid">-->
+<!--      <a class="navbar-brand" href="/">AgroTech Crop Selector</a>-->
+<!--      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--      </button>-->
+<!--      <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--        <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="#">Contact</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link disabled">About</a>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--        <form class="d-flex" role="search">-->
+<!--          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--          <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </nav>-->
+
+<!--  <div class="container my-3 mt-3">-->
+<!--    <h1 style="color: #006400; text-align: center; margin-bottom: 50px;">-->
+<!--      AgroTech Crop Selector <span>🌱</span>-->
+<!--    </h1>-->
+
+<!--    <form action="/predict" method="POST" onsubmit="showSpinner()">-->
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Nitrogen">Nitrogen</label>-->
+<!--          <input type="number" id="Nitrogen" name="Nitrogen" class="form-control" placeholder="Enter Nitrogen" title="Amount of Nitrogen in soil" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Phosphorus">Phosphorus</label>-->
+<!--          <input type="number" id="Phosphorus" name="Phosphorus" class="form-control" placeholder="Enter Phosphorus" title="Amount of Phosphorus in soil" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Potassium">Potassium</label>-->
+<!--          <input type="number" id="Potassium" name="Potassium" class="form-control" placeholder="Enter Potassium" title="Amount of Potassium in soil" required>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Temperature">Temperature (°C)</label>-->
+<!--          <input type="number" step="0.01" id="Temperature" name="Temperature" class="form-control" placeholder="Enter Temperature in °C" title="Temperature in degree Celsius" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Humidity">Humidity (%)</label>-->
+<!--          <input type="number" step="0.01" id="Humidity" name="Humidity" class="form-control" placeholder="Enter Humidity in %" title="Humidity percentage" required>-->
+<!--        </div>-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Ph">pH</label>-->
+<!--          <input type="number" step="0.01" id="Ph" name="Ph" class="form-control" placeholder="Enter pH value" title="Soil pH value" required>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-4">-->
+<!--          <label for="Rainfall">Rainfall (mm)</label>-->
+<!--          <input type="number" step="0.01" id="Rainfall" name="Rainfall" class="form-control" placeholder="Enter Rainfall in mm" title="Rainfall amount in millimeters" required>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-12 text-center">-->
+<!--          <button type="submit" class="btn btn-primary btn-lg">-->
+<!--            <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>-->
+<!--            Get Recommendation-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </form>-->
+
+<!--    {% if result %}-->
+<!--    <div class="d-flex justify-content-center mt-4">-->
+<!--      <div class="card bg-dark" style="width: 18rem;">-->
+<!--        <img src="{{ url_for('static', filename='recommend.jpg') }}" class="card-img-top" alt="Crop Image">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">Suggested Crop for Your Farm:</h5>-->
+<!--          <p class="card-text">{{ result }} 🌾</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    {% endif %}-->
+<!--  </div>-->
+
+<!--  <footer class="text-center text-light bg-dark py-3 mt-5">-->
+<!--    &copy; 2025 AgroTech Crop Selector. All Rights Reserved.-->
+<!--  </footer>-->
+
+<!--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>-->
+<!--  <script>-->
+<!--    function showSpinner() {-->
+<!--      document.getElementById('spinner').classList.remove('d-none');-->
+<!--    }-->
+<!--  </script>-->
+<!--  </body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--  <head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>AgroTech Crop Selector</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <style>-->
+<!--      body {-->
+<!--        background: url("{{ url_for('static', filename='background.jpg') }}") no-repeat center center fixed;-->
+<!--        background-size: cover;-->
+<!--        font-family: 'Segoe UI', sans-serif;-->
+<!--      }-->
+
+<!--      h1 {-->
+<!--        color: mediumseagreen;-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .warning {-->
+<!--        color: red;-->
+<!--        font-weight: bold;-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .card {-->
+<!--        margin-top: 20px;-->
+<!--        color: white;-->
+<!--      }-->
+
+<!--      .container {-->
+<!--        background: transparent;-->
+<!--        backdrop-filter: blur(4px);-->
+<!--        font-weight: bold;-->
+<!--        padding: 30px;-->
+<!--        border-radius: 15px;-->
+<!--        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);-->
+<!--      }-->
+
+<!--      label {-->
+<!--        color: #333;-->
+<!--      }-->
+
+<!--      .form-control:hover, .form-control:focus {-->
+<!--        border-color: #198754;-->
+<!--        box-shadow: 0 0 5px rgba(25, 135, 84, 0.5);-->
+<!--      }-->
+
+<!--      footer {-->
+<!--        margin-top: 60px;-->
+<!--        background-color: #343a40;-->
+<!--        color: white;-->
+<!--        text-align: center;-->
+<!--        padding: 15px 0;-->
+<!--      }-->
+<!--    </style>-->
+<!--  </head>-->
+
+<!--  <body>-->
+<!--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--      <div class="container-fluid">-->
+<!--        <a class="navbar-brand" href="/">AgroTech Crop Selector</a>-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">-->
+<!--          <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--          <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link active" href="#">Home</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link" href="/contact">Contact</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link" href="/about">About</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--          <form class="d-flex" role="search">-->
+<!--            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--            <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </nav>-->
+
+<!--    <div class="container my-5">-->
+<!--      <h1>AgroTech Crop Selector <span>🌱</span></h1>-->
+
+<!--      <form action="/predict" method="POST">-->
+<!--        <div class="row">-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Nitrogen">Nitrogen</label>-->
+<!--            <input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control" required>-->
+<!--          </div>-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Phosporus">Phosphorus</label>-->
+<!--            <input type="number" id="Phosporus" name="Phosphorus" placeholder="Enter Phosphorus" class="form-control" required>-->
+<!--          </div>-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Potassium">Potassium</label>-->
+<!--            <input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" class="form-control" required>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="row mt-4">-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Temperature">Temperature</label>-->
+<!--            <input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" class="form-control" required>-->
+<!--          </div>-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Humidity">Humidity</label>-->
+<!--            <input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" class="form-control" required>-->
+<!--          </div>-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Ph">pH</label>-->
+<!--            <input type="number" step="0.01" id="Ph" name="Ph" placeholder="Enter pH value" class="form-control" required>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="row mt-4">-->
+<!--          <div class="col-md-4">-->
+<!--            <label for="Rainfall">Rainfall</label>-->
+<!--            <input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" class="form-control" required>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="text-center mt-4">-->
+<!--          <button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>-->
+<!--        </div>-->
+<!--      </form>-->
+
+<!--      {% if result %}-->
+<!--      <div class="d-flex justify-content-center mt-5">-->
+<!--        <div class="card bg-dark text-white" style="width: 20rem;">-->
+<!--          <img src="{{ url_for('static', filename='recommend.jpg') }}" class="card-img-top" alt="Crop image">-->
+<!--          <div class="card-body">-->
+<!--            <h5 class="card-title">Suggested Crop for Your Farm:</h5>-->
+<!--            <p class="card-text fs-5">{{ result }}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      {% endif %}-->
+<!--    </div>-->
+
+<!--    <footer>-->
+<!--      &copy; 2025 AgroTech Crop Selector. Built with ❤️ for better farming.-->
+<!--    </footer>-->
+
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--  </body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--  <head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>Bootstrap demo</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">-->
+<!--  </head>-->
+<!--  <style>-->
+<!--    body {-->
+<!--      background: url("{{ url_for('static', filename='background.jpg') }}") no-repeat center center fixed;-->
+<!--      background-size: cover;-->
+<!--    }-->
+
+<!--    h1 {-->
+<!--      color: mediumseagreen;-->
+<!--      text-align: center;-->
+<!--    }-->
+
+<!--    .warning {-->
+<!--      color: red;-->
+<!--      font-weight: bold;-->
+<!--      text-align: center;-->
+<!--    }-->
+
+<!--    .card {-->
+<!--      margin-top: 20px;-->
+<!--      color: white;-->
+<!--    }-->
+
+<!--    .container {-->
+<!--      background: transparent; /* semi-transparent for readability */-->
+<!--      font-weight: bold;-->
+<!--      padding-bottom: 10px;-->
+<!--      border-radius: 15px;-->
+<!--    }-->
+<!--  </style>-->
+
+<!--  <body>-->
+
+<!--  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--  <div class="container-fluid">-->
+<!--    <a class="navbar-brand" href="/">AgroTech Crop Selector</a>-->
+<!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--      <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link active" aria-current="page" href="#">home</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Contact</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link disabled">About</a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--      <form class="d-flex" role="search">-->
+<!--        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--        <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->
+
+
+<!--  <div class="container my-3 mt-3">-->
+<!--    <h1 style="color: #006400; text-align: center; margin-bottom: 50px;">-->
+<!--  AgroTech Crop Selector <span>🌱</span>-->
+<!--    </h1>-->
+
+<!--&lt;!&ndash;    adding form&ndash;&gt;-->
+<!--    <form action="/predict"method="POST">-->
+<!--      <div class="row">-->
+<!--        <div class="col-md-4 mb-6">-->
+<!--					<label for="Nitrogen">Nitrogen</label>-->
+<!--					<input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control" required step="0">-->
+<!--				</div>-->
+<!--               <div class="col-md-4">-->
+<!--					<label for="Phosporus">Phosphorus</label>-->
+<!--					<input type="number" id="Phosporus" name="Phosphorus" placeholder="Enter Phosphorus" class="form-control" required step="00">-->
+<!--				</div>-->
+<!--				<div class="col-md-4">-->
+<!--					<label for="Potassium">Potassium</label>-->
+<!--					<input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" class="form-control" required step="0">-->
+<!--				</div>-->
+<!--      </div>-->
+
+<!--      <div class="row mt-4">-->
+<!--				<div class="col-md-4">-->
+<!--					<label for="Temperature">Temperature</label>-->
+<!--					<input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" class="form-control" required step="0">-->
+<!--				</div>-->
+<!--				<div class="col-md-4">-->
+<!--					<label for="Humidity">Humidity</label>-->
+<!--					<input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" class="form-control" required step="0">-->
+<!--				</div>-->
+<!--				<div class="col-md-4">-->
+<!--					<label for="pH">pH</label>-->
+<!--					<input type="number" step="0.01" id="Ph" name="Ph" placeholder="Enter PH value" class="form-control" required step="0">-->
+<!--				</div>-->
+<!--			</div>-->
+
+<!--      <div class="row mt-4">-->
+<!--				<div class="col-md-4">-->
+<!--					<label for="Rainfall">Rainfall</label>-->
+<!--					<input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" class="form-control" required>-->
+<!--				</div>-->
+<!--			</div>-->
+
+<!--       <div class="row mt-4">-->
+
+<!--           <div class="col-md-12 text-center">-->
+<!--				<button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>-->
+<!--			</div>-->
+<!--			</div>-->
+<!--    </form>-->
+
+<!--      {% if result %}-->
+<!--      <div class="d-flex justify-content-center mt-4">-->
+<!--         <div class="card bg-dark" style="width: 18rem;">-->
+<!--          <img src="{{ url_for('static', filename='recommend.jpg') }}" class="card-img-top" alt="...">-->
+<!--          <div class="card-body">-->
+<!--            <h5 class="card-title">Suggested Crop for Your Farm:</h5>-->
+<!--           <p class="card-text">{{ result }}</p>-->
+<!--          </div>-->
+<!--         </div>-->
+<!--      </div>-->
+
+<!--	   {% endif %}-->
+
+<!--  </div>-->
+
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>-->
+<!--  </body>-->
+<!--</html>-->
