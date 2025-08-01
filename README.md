@@ -17,13 +17,13 @@ is a Flask-based web application that predicts the most suitable crop to cultiva
 
 **🧠 Tech Stack**
 
-  **1. Backend:** Python, Flask
+**1. Backend:** Python, Flask
 
-  **2. Frontend:** HTML5, CSS3, Bootstrap 5
+**2. Frontend:** HTML5, CSS3, Bootstrap 5
 
-  **3. Machine Learning:** scikit-learn, NumPy, pandas
+**3. Machine Learning:** scikit-learn, NumPy, pandas
 
-  **4. Model Files:**
+**4. Model Files:**
 
      model.pkl: Trained ML classification model
 
@@ -32,9 +32,8 @@ is a Flask-based web application that predicts the most suitable crop to cultiva
 
 **📂 Project Structure**
 
-AgroTech-Crop-Selector
-│
-├── static/
+📁 AgroTech-Crop-Selector/
+├── 📁 static/
 │   ├── background.jpg
 │   ├── default.jpg
 │   ├── placeholder.jpg
@@ -42,14 +41,13 @@ AgroTech-Crop-Selector
 │   ├── banana.jpg
 │   └── ... (images for each crop)
 │
-├── templates/
+├── 📁 templates/
 │   └── index.html
 │
-├── model.pkl               # Trained ML model
-├── sc.pkl                  # StandardScaler used in training
-├── app.py                  # Flask application code
-└── README.md               # Project documentation
-
+├── model.pkl           # Trained ML model
+├── sc.pkl              # StandardScaler used in training
+├── app.py              # Flask application code
+└── README.md           # Project documentation
 
 
 **🖥️ How to Run the Project**
@@ -107,8 +105,6 @@ The model predicts among 22 different crops including Rice, Banana, Cotton, Maiz
 
 
 **✅ Input Validations**
-
-Parameters
 
 **Validation pH:-**
 Must be between 1 and 14
