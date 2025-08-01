@@ -17,13 +17,13 @@ is a Flask-based web application that predicts the most suitable crop to cultiva
 
 **🧠 Tech Stack**
 
-**1. Backend:** Python, Flask
+  **1. Backend:** Python, Flask
 
-**2. Frontend:** HTML5, CSS3, Bootstrap 5
+  **2. Frontend:** HTML5, CSS3, Bootstrap 5
 
-**3. Machine Learning:** scikit-learn, NumPy, pandas
+  **3. Machine Learning:** scikit-learn, NumPy, pandas
 
-**4. Model Files:**
+  **4. Model Files:**
 
      model.pkl: Trained ML classification model
 
@@ -56,7 +56,7 @@ AgroTech-Crop-Selector
 
 **1.Clone the repository**
 
-    bash:- git clone https://github.com/yourusername/AgroTech-Crop-Selector.git
+    bash:- git clone https://github.com/arpitrao7777/AgroTech-Crop-Selector.git
            cd AgroTech-Crop-Selector
 
 **2.Set up a virtual environment (recommended)**
