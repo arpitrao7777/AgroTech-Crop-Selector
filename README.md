@@ -1,6 +1,6 @@
 # AgroTech-Crop-Selector
 **🌱 AgroTech Crop Selector**
-AgroTech Crop Selector is a Flask-based web application that predicts the most suitable crop to cultivate based on key agricultural parameters like soil nutrients (N, P, K), temperature, humidity, pH, and rainfall. It utilizes a machine learning model trained on agricultural datasets to assist farmers and agriculturalists in making data-driven decisions.
+is a Flask-based web application that predicts the most suitable crop to cultivate based on key agricultural parameters like soil nutrients (N, P, K), temperature, humidity, pH, and rainfall. It utilizes a machine learning model trained on agricultural datasets to assist farmers and agriculturalists in making data-driven decisions.
 
 **🚀 Features**
 1. Predicts the best crop based on soil and climate conditions.
@@ -14,20 +14,19 @@ AgroTech Crop Selector is a Flask-based web application that predicts the most s
 5. Input validation for realistic values (e.g., pH, temperature, humidity).
 
 **🧠 Tech Stack**
-1. Backend: Python, Flask
+**1. Backend:** Python, Flask
 
-2. Frontend: HTML5, CSS3, Bootstrap 5
+**2. Frontend:** HTML5, CSS3, Bootstrap 5
 
-3. Machine Learning: scikit-learn, NumPy, pandas
+**3. Machine Learning:** scikit-learn, NumPy, pandas
 
-4. Model Files:
+**4. Model Files:**
 
    model.pkl: Trained ML classification model
 
    sc.pkl: StandardScaler object for feature normalization
 
 **📂 Project Structure**
-
 
 AgroTech-Crop-Selector/
 │
@@ -46,50 +45,43 @@ AgroTech-Crop-Selector/
 ├── sc.pkl                  # StandardScaler used in training
 ├── app.py                  # Flask application code
 └── README.md               # Project documentation
+
+
 **🖥️ How to Run the Project**
 
-1.Clone the repository
+**1.Clone the repository**
 
-bash:-
+bash:- git clone https://github.com/yourusername/AgroTech-Crop-Selector.git
+       cd AgroTech-Crop-Selector
 
-git clone https://github.com/yourusername/AgroTech-Crop-Selector.git
-cd AgroTech-Crop-Selector
+**2.Set up a virtual environment (recommended)**
 
-2.Set up a virtual environment (recommended)
+bash:- python -m venv venv
+       source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
-bash:-
+**3.Install required packages**
 
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+nginx:- pip install -r requirements.txt
 
-3.Install required packages
-
-nginx:-
-
-pip install -r requirements.txt
 If requirements.txt is not available, manually install:
 
-nginx:-
+nginx:- pip install flask numpy pandas scikit-learn
 
-pip install flask numpy pandas scikit-learn
+**4.Run the app**
 
-4.Run the app
+nginx:- python app.py
 
-nginx:-
-
-python app.py
-
-5.Access the application
+**5.Access the application**
 
 Open your browser and go to http://127.0.0.1:5000
 
 **📊 Model Details**
 
-Type: Classification model
+**Type:** Classification model
 
-Algorithm: (e.g., RandomForestClassifier or any other used)
+**Algorithm:** (RandomForestClassifier)
 
-Input Features:
+**Input Features:**
 
 1. Nitrogen (N)
 
@@ -107,21 +99,19 @@ Input Features:
 
 The model predicts among 22 different crops including Rice, Banana, Cotton, Maize, Apple, and Coffee.
 
-**🧪 Sample Inputs**
-Nitrogen	Phosphorus	Potassium	Temp (°C)	Humidity (%)	pH	Rainfall (mm)
-90	42	43	22.5	80	6.5	120
-
 
 **✅ Input Validations**
-Parameter	Validation
-pH:-
+
+Parameters
+
+**Validation pH:-**
 Must be between 1 and 14
 
-Humidity:-
+**Humidity:-**
 Cannot exceed 100%
 
-Temperature:-
+**Temperature:-**
 Cannot exceed 55°C
 
-All others:-
+**All others:-**
 Must be positive numeric values
